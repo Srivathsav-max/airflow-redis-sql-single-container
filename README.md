@@ -1,5 +1,9 @@
 # Multiple Resouces Config to Single Docker Image
 
+> Resources Used (airflow, Redis, MySql)
+
+## Setup
+
 * Docker Build
 ```
 docker build -t airflow-redis-sql .
