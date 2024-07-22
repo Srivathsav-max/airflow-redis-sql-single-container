@@ -4,7 +4,7 @@ FROM apache/airflow:2.5.0-python3.8
 # Set environment variables
 ENV AIRFLOW_HOME=/opt/airflow
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
-# SequentialExecutor,LocalExecutor
+# SequentialExecutor - Runs Each Resource at a time frame ,LocalExecutor - Runs Multiple Resources in Parllel
 ENV AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://airflow:airflow@localhost:3306/airflow"
 ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor 
 
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     sudo \
     mariadb-server
 
-# Allow airflow user to run commands as root without a password
+# Allow airflow user to run commands as root without a password (giving equal permissions of root to airflow)
 RUN echo "airflow ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/airflow
 
 # Install supervisord
@@ -58,8 +58,8 @@ RUN pip install --no-cache-dir redis pymysql
 # Copy your DAGs into the image
 COPY dags/ $AIRFLOW_HOME/dags/
 
-# Expose ports for web server and Redis
-EXPOSE 8080 6379 3306
+# Expose ports for web server Redis and MySql
+EXPOSE 8080 6379 3306 
 
 # Use the entrypoint script as the entrypoint for the container
 ENTRYPOINT ["/entrypoint.sh"]
